@@ -1,0 +1,59 @@
+.lr-loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(3, 7, 18, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lr-bar-container {
+  width: 350px;
+  text-align: center;
+  position: relative;
+}
+
+.lr-road {
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+  border-radius: 999px;
+  filter: drop-shadow(0 0 8px #22d3ee);
+  margin-bottom: 25px;
+}
+
+.lr-car-wrapper {
+  width: 100%;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lr-car-img {
+  height: 75px;
+  width: 75px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -80px;
+  filter: drop-shadow(0 0 8px #22d3ee);
+  animation: lr-drive 1.5s linear infinite;
+}
+
+@keyframes lr-drive {
+  0% {
+    transform: translate(-80px, -50%);
+  }
+  100% {
+    transform: translate(calc(350px + 80px), -50%);
+  }
+}
+
+.lr-loading-text {
+  margin-top: 5px;
+  color: #cbd5e1;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+}

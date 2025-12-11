@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { api } from "../api";
 import { useReset } from "../context/reset/useReset";
+import { useLoading } from "../context/loading/useLoading";
 
 export default function ViewTransactions() {
   const [customerId, setCustomerId] = useState("");
@@ -12,6 +13,7 @@ export default function ViewTransactions() {
   const [totalPages, setTotalPages] = useState(1);
 
   const { register } = useReset();
+  const { setLoading } = useLoading();
 
   const loadTransactions = async (pageNumber = 1) => {
     setError("");
@@ -23,6 +25,7 @@ export default function ViewTransactions() {
     }
 
     try {
+      setLoading(true);
       const res = await api.get("/transactions", {
         params: { customerId, page: pageNumber, limit: 5 },
       });
@@ -37,6 +40,8 @@ export default function ViewTransactions() {
     } catch (err) {
       setList([]);
       setError(err.response?.data?.message || "Could not load transactions");
+    } finally {
+      setLoading(false);
     }
   };
 

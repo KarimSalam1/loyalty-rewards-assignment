@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { api } from "../api";
 import { useReset } from "../context/reset/useReset";
+import { useLoading } from "../context/loading/useLoading";
 
 export default function BatchPost() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const { resetAll } = useReset();
+  const { setLoading } = useLoading();
 
   const startAutoClear = () => {
     setTimeout(() => {
@@ -20,6 +22,7 @@ export default function BatchPost() {
     setSuccess("");
 
     try {
+      setLoading(true);
       const res = await api.post("/batch-post");
 
       setSuccess(
@@ -31,6 +34,8 @@ export default function BatchPost() {
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong");
       startAutoClear();
+    } finally {
+      setLoading(false);
     }
   };
 

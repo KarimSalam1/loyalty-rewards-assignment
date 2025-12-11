@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
 import { useReset } from "../context/reset/useReset";
+import { useLoading } from "../context/loading/useLoading";
 
 export default function ViewAccount() {
   const [customerId, setCustomerId] = useState("");
@@ -9,18 +10,22 @@ export default function ViewAccount() {
   const [success, setSuccess] = useState("");
 
   const { register, resetAll } = useReset();
+  const { setLoading } = useLoading();
 
   const load = async () => {
     resetAll();
     resetFields();
 
     try {
+      setLoading(true);
       const res = await api.get(`/accounts/${customerId}`);
       setAccount(res.data);
       setSuccess(`Account loaded successfully for customer ${customerId}`);
     } catch (err) {
       const message = err.response?.data?.message || "Account not found.";
       setError(message);
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { api } from "../api";
 import { useReset } from "../context/reset/useReset";
+import { useLoading } from "../context/loading/useLoading";
 
 export default function EarnPoints() {
   const [customerId, setCustomerId] = useState("");
@@ -13,6 +14,7 @@ export default function EarnPoints() {
   const [success, setSuccess] = useState("");
 
   const { register, resetAll } = useReset();
+  const { setLoading } = useLoading();
 
   const earn = async () => {
     resetFields();
@@ -28,6 +30,7 @@ export default function EarnPoints() {
     }
 
     try {
+      setLoading(true);
       let payload = {
         customerId: Number(customerId),
         category,
@@ -67,6 +70,8 @@ export default function EarnPoints() {
       await api.post("/earn", payload);
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 

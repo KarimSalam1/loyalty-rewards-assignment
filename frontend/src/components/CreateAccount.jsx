@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { api } from "../api";
 import { useReset } from "../context/reset/useReset";
+import { useLoading } from "../context/loading/useLoading";
 
 export default function CreateAccount() {
   const [customerId, setCustomerId] = useState("");
@@ -9,12 +10,14 @@ export default function CreateAccount() {
   const [success, setSuccess] = useState("");
 
   const { register, resetAll } = useReset();
+  const { setLoading } = useLoading();
 
   const create = async () => {
     resetFields();
     resetAll();
 
     try {
+      setLoading(true);
       const res = await api.post("/accounts", {
         customerId: Number(customerId),
       });
@@ -24,6 +27,8 @@ export default function CreateAccount() {
     } catch (err) {
       setResult(null);
       setError(err.response?.data?.message || "Unable to create account.");
+    } finally {
+      setLoading(false);
     }
   };
 

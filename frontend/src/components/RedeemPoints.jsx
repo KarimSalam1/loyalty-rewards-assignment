@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { api } from "../api";
 import { useReset } from "../context/reset/useReset";
+import { useLoading } from "../context/loading/useLoading";
 
 export default function RedeemPoints() {
   const [customerId, setCustomerId] = useState("");
@@ -9,12 +10,14 @@ export default function RedeemPoints() {
   const [success, setSuccess] = useState("");
 
   const { register, resetAll } = useReset();
+  const { setLoading } = useLoading();
 
   const redeem = async () => {
     resetFields();
     resetAll();
 
     try {
+      setLoading(true);
       const res = await api.post("/redeem", {
         customerId: Number(customerId),
         points: Number(points),
@@ -27,6 +30,8 @@ export default function RedeemPoints() {
       setSuccess(`Redemption successful. Total deducted: ${total} points.`);
     } catch (err) {
       setError(err.response?.data?.message || "Unable to process redemption.");
+    } finally {
+      setLoading(false);
     }
   };
 
