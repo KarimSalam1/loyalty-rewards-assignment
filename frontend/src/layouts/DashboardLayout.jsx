@@ -32,7 +32,7 @@ export default function DashboardLayout({ children }) {
               to={item.to}
               className={({ isActive }) =>
                 `
-        flex items-center gap-3 px-3 py-2 rounded-md transition
+        flex items-center gap-3 px-3 py-2 rounded-md transition mb-2
         ${
           isActive
             ? "bg-slate-800 text-white border-l-4 border-emerald-400"
@@ -53,17 +53,17 @@ export default function DashboardLayout({ children }) {
       </aside>
 
       <div className="flex-1 flex flex-col">
-        <header className="h-16 border-b border-slate-800 bg-slate-900/70 flex items-center justify-between px-6 relative">
+        <header className="h-16 border-b border-slate-800 bg-slate-900/70 flex items-center justify-end px-6 relative">
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <h1 className="text-xl font-semibold">{getTitle()}</h1>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 right-0">
             <span className="hidden sm:inline text-xs text-slate-400">
               Admin
             </span>
             <div className="w-8 h-8 rounded-full bg-emerald-500/80 flex items-center justify-center text-xs font-bold">
-              LR
+              KS
             </div>
           </div>
         </header>
