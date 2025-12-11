@@ -35,23 +35,32 @@ export default function BatchPost() {
   };
 
   return (
-    <div className="space-y-4 text-slate-100">
+    <div className="space-y-6 text-slate-100">
       <h2 className="text-xl font-semibold text-center">Batch Post</h2>
+
+      <p className="text-center text-slate-400 text-sm max-w-md mx-auto">
+        This process will post all pending EARN and REDEEM transactions, update
+        account balances, and assign a batch ID.
+      </p>
 
       <button
         onClick={runBatch}
-        className="bg-purple-600 text-white px-3 py-2 rounded-md hover:bg-purple-700 cursor-pointer mx-auto block w-40 text-center"
+        className="bg-purple-600 text-white px-4 py-2 rounded-md 
+                 hover:bg-purple-700 cursor-pointer mx-auto block w-48 text-center"
       >
-        Run Batch
+        Run Batch Posting
       </button>
 
       {error && (
-        <p className="text-red-400 text-center whitespace-pre-line">{error}</p>
+        <div className="text-red-300 bg-red-900/20 border border-red-700 p-3 rounded-md text-center whitespace-pre-line">
+          {error}
+        </div>
       )}
+
       {success && (
-        <p className="text-green-400 text-center whitespace-pre-line">
+        <div className="text-green-300 bg-green-900/20 border border-green-700 p-3 rounded-md text-center whitespace-pre-line">
           {success}
-        </p>
+        </div>
       )}
     </div>
   );

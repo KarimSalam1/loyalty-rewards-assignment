@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   LoyaltyTransaction,
@@ -13,7 +13,7 @@ import { LoyaltyAccountModule } from '../loyalty-account/loyalty-account.module'
     MongooseModule.forFeature([
       { name: LoyaltyTransaction.name, schema: LoyaltyTransactionSchema },
     ]),
-    LoyaltyAccountModule,
+    forwardRef(() => LoyaltyAccountModule),
   ],
   controllers: [LoyaltyTransactionController],
   providers: [LoyaltyTransactionService],

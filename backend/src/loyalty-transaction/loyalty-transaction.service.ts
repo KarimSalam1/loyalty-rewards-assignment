@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  Inject,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
@@ -18,6 +23,7 @@ export class LoyaltyTransactionService {
     @InjectModel(LoyaltyTransaction.name)
     private transactionModel: Model<LoyaltyTransactionDocument>,
 
+    @Inject(forwardRef(() => LoyaltyAccountService))
     private readonly accountService: LoyaltyAccountService,
   ) {}
 
@@ -93,6 +99,8 @@ export class LoyaltyTransactionService {
       throw new BadRequestException('Account not found');
     }
 
+    await this.cleanupExpiredPoints(account._id);
+
     const pendingRedeems = await this.transactionModel.find({
       loyaltyAccountId: account._id,
       type: TransactionType.REDEEM,
@@ -119,6 +127,7 @@ export class LoyaltyTransactionService {
         loyaltyAccountId: account._id,
         type: TransactionType.EARN,
         posted: true,
+        expired: false,
         expirationDate: { $gte: now },
       })
       .sort({ transactionDate: 1 });
@@ -163,6 +172,8 @@ export class LoyaltyTransactionService {
     const account = await this.accountService.findByCustomerId(customerId, 1);
     if (!account) throw new BadRequestException('Account not found');
 
+    await this.cleanupExpiredPoints(account._id);
+
     const skip = (page - 1) * limit;
 
     const [items, total] = await Promise.all([
@@ -190,7 +201,7 @@ export class LoyaltyTransactionService {
     });
 
     if (pendingTx.length === 0) {
-      return { message: 'No pending transactions to post' };
+      throw new BadRequestException('No pending transactions to post');
     }
 
     const batchId = `BATCH-${Date.now()}`;
@@ -231,7 +242,6 @@ export class LoyaltyTransactionService {
       totalRedeemed,
     };
   }
-
   async calculatePoints(dto: CalculatePointsDto) {
     const { customerId, rentalDuration, milesDriven } = dto;
 
@@ -302,6 +312,39 @@ export class LoyaltyTransactionService {
       oldTier: account.tier,
       newTier,
       tierQualifyingPoints: currentPoints,
+    };
+  }
+  async cleanupExpiredPoints(accountId: Types.ObjectId) {
+    const now = new Date();
+
+    const expiredEarns = await this.transactionModel.find({
+      loyaltyAccountId: accountId,
+      type: TransactionType.EARN,
+      posted: true,
+      expired: false,
+      expirationDate: { $lt: now },
+    });
+
+    if (expiredEarns.length === 0) {
+      return { expiredCount: 0, expiredPoints: 0 };
+    }
+
+    let expiredTotal = 0;
+
+    for (const tx of expiredEarns) {
+      expiredTotal += tx.points;
+    }
+
+    await this.accountService.reduceBalance(accountId, expiredTotal);
+
+    for (const tx of expiredEarns) {
+      tx.expired = true;
+      await tx.save();
+    }
+
+    return {
+      expiredCount: expiredEarns.length,
+      expiredPoints: expiredTotal,
     };
   }
 }

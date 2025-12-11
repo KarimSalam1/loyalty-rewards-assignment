@@ -33,36 +33,41 @@ const tiers = [
 
 export default function TiersPage() {
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-10 text-slate-100">
-      <h1 className="text-3xl font-bold text-center">Loyalty Tiers</h1>
+    <div className="max-w-5xl mx-auto p-6 space-y-10 text-slate-100">
+      <h1 className="text-3xl font-bold text-center tracking-tight">
+        Loyalty Tier Structure
+      </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {tiers.map((tier) => (
           <Card key={tier.name}>
             <div
-              className={`p-5 rounded-xl border ${tier.accent} bg-slate-900/40 hover:bg-slate-900/60 transition`}
+              className={`p-6 rounded-xl border ${tier.accent} 
+              bg-slate-900/40 hover:bg-slate-900/70 
+              transition shadow-sm hover:shadow-lg`}
             >
               <h2
-                className={`text-2xl font-semibold mb-3 ${
+                className={`text-2xl font-semibold mb-4 ${
                   tier.accent.split(" ")[0]
                 }`}
               >
                 {tier.name}
               </h2>
 
-              <p className="text-slate-300 mb-1">
-                <span className="font-bold">Minimum Tier Points:</span>{" "}
-                {tier.minPoints}
-              </p>
-
-              <p className="text-slate-300 mb-1">
-                <span className="font-bold">Earn Multiplier:</span>{" "}
-                {tier.multiplier}
-              </p>
-
-              <p className="text-slate-300">
-                <span className="font-bold">Benefits:</span> {tier.benefits}
-              </p>
+              <div className="space-y-2 text-slate-300">
+                <p>
+                  <span className="font-semibold">Minimum Tier Points:</span>{" "}
+                  {tier.minPoints}
+                </p>
+                <p>
+                  <span className="font-semibold">Earn Multiplier:</span>{" "}
+                  {tier.multiplier}
+                </p>
+                <p>
+                  <span className="font-semibold">Benefits:</span>{" "}
+                  {tier.benefits}
+                </p>
+              </div>
             </div>
           </Card>
         ))}

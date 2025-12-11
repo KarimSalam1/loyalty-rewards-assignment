@@ -50,6 +50,9 @@ export class LoyaltyTransaction {
 
   @Prop({ required: true, default: false })
   posted: boolean;
+
+  @Prop({ default: false })
+  expired: boolean;
 }
 
 export const LoyaltyTransactionSchema =

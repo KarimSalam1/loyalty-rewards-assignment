@@ -37,35 +37,63 @@ export default function ViewAccount() {
   }, []);
 
   return (
-    <div className="space-y-4 text-slate-100">
+    <div className="space-y-6 text-slate-100">
       <h2 className="text-xl font-semibold text-center">View Account</h2>
 
-      <input
-        type="number"
-        placeholder="Customer ID"
-        value={customerId}
-        onChange={(e) => setCustomerId(e.target.value)}
-        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
-      />
+      <div className="space-y-1">
+        <label className="text-sm text-slate-300">Customer ID</label>
+        <input
+          type="number"
+          placeholder="Enter customer ID"
+          value={customerId}
+          onChange={(e) => setCustomerId(e.target.value)}
+          className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md 
+                   focus:outline-none focus:border-blue-500"
+        />
+      </div>
 
       <button
         onClick={load}
-        className="bg-gray-600 text-white px-3 py-2 rounded-md hover:bg-gray-700 cursor-pointer mx-auto block w-32 text-center"
+        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 
+                 cursor-pointer mx-auto block w-40 text-center"
       >
-        Load
+        Load Account
       </button>
-
-      {account && (
-        <div className="text-center space-y-1 text-slate-300">
-          <p>Account#: {account.accountNumber}</p>
-          <p>Tier: {account.tier}</p>
-          <p>Balance: {account.currentBalance}</p>
-          <p>Tier Points: {account.tierQualifyingPoints}</p>
-        </div>
-      )}
 
       {error && <p className="text-red-400 text-center">{error}</p>}
       {success && <p className="text-green-400 text-center">{success}</p>}
+
+      {account && (
+        <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-lg space-y-2 text-center mt-4">
+          <div>
+            <p className="text-xs text-slate-400">Account Number</p>
+            <p className="text-lg font-semibold text-emerald-400">
+              {account.accountNumber}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-xs text-slate-400">Tier</p>
+            <p className="text-base font-semibold text-slate-200">
+              {account.tier}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-xs text-slate-400">Balance</p>
+            <p className="text-xl font-bold text-slate-100">
+              {account.currentBalance}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-xs text-slate-400">Tier Qualifying Points</p>
+            <p className="text-base font-semibold text-slate-200">
+              {account.tierQualifyingPoints}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

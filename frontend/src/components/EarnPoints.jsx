@@ -91,62 +91,82 @@ export default function EarnPoints() {
     <div className="space-y-4 text-slate-100">
       <h2 className="text-xl font-semibold text-center">Earn Points</h2>
 
-      <input
-        type="number"
-        placeholder="Customer ID"
-        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
-        value={customerId}
-        onChange={(e) => setCustomerId(e.target.value)}
-      />
+      <div className="space-y-1">
+        <label className="text-sm text-slate-300">Customer ID</label>
+        <input
+          type="number"
+          placeholder="Enter customer ID"
+          className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
+          value={customerId}
+          onChange={(e) => setCustomerId(e.target.value)}
+        />
+      </div>
 
-      <select
-        className="w-full bg-slate-800 border border-slate-700 text-slate-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        <option value="">Select Category</option>
-        <option value="NTM">NTM (Time & Mileage)</option>
-        <option value="PROMOTIONAL">Promotional</option>
-        <option value="CPC">CPC (Counter Products)</option>
-      </select>
+      <div className="space-y-1">
+        <label className="text-sm text-slate-300">Category</label>
+        <select
+          className="w-full bg-slate-800 border border-slate-700 text-slate-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">Select Category</option>
+          <option value="NTM">NTM (Time & Mileage)</option>
+          <option value="PROMOTIONAL">Promotional</option>
+          <option value="CPC">CPC (Counter Products)</option>
+        </select>
+      </div>
 
       {category === "NTM" && (
         <>
-          <input
-            type="number"
-            placeholder="Rental Duration (days)"
-            className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
-            value={rentalDuration}
-            onChange={(e) => setRentalDuration(e.target.value)}
-          />
+          <div className="space-y-1">
+            <label className="text-sm text-slate-300">
+              Rental Duration (days)
+            </label>
+            <input
+              type="number"
+              placeholder="Days"
+              className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
+              value={rentalDuration}
+              onChange={(e) => setRentalDuration(e.target.value)}
+            />
+          </div>
 
-          <input
-            type="number"
-            placeholder="Miles Driven"
-            className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
-            value={milesDriven}
-            onChange={(e) => setMilesDriven(e.target.value)}
-          />
+          <div className="space-y-1">
+            <label className="text-sm text-slate-300">Miles Driven</label>
+            <input
+              type="number"
+              placeholder="Miles"
+              className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
+              value={milesDriven}
+              onChange={(e) => setMilesDriven(e.target.value)}
+            />
+          </div>
         </>
       )}
 
       {(category === "PROMOTIONAL" || category === "CPC") && (
-        <input
-          type="number"
-          placeholder="Points"
-          className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
-          value={points}
-          onChange={(e) => setPoints(e.target.value)}
-        />
+        <div className="space-y-1">
+          <label className="text-sm text-slate-300">Points</label>
+          <input
+            type="number"
+            placeholder="Points"
+            className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
+            value={points}
+            onChange={(e) => setPoints(e.target.value)}
+          />
+        </div>
       )}
 
-      <input
-        type="text"
-        placeholder="Description (optional)"
-        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
+      <div className="space-y-1">
+        <label className="text-sm text-slate-300">Description</label>
+        <input
+          type="text"
+          placeholder="Optional description"
+          className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
 
       <button
         onClick={earn}

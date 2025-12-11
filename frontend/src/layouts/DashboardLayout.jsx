@@ -8,8 +8,7 @@ export default function DashboardLayout({ children }) {
     if (location.pathname === "/") return "Accounts";
     if (location.pathname.startsWith("/transactions")) return "Transactions";
     if (location.pathname.startsWith("/tiers")) return "Tiers";
-    if (location.pathname.startsWith("/dashboard")) return "Dashboard";
-    return "Dashboard";
+    return "Accounts";
   };
 
   return (
@@ -22,80 +21,42 @@ export default function DashboardLayout({ children }) {
         </div>
 
         <nav className="flex-1 p-4 space-y-1 text-sm">
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              `w-full block px-3 py-2 rounded-md ${
-                isActive
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-300 hover:bg-slate-800/70"
-              }`
-            }
-          >
-            Dashboard
-          </NavLink>
-
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `w-full block px-3 py-2 rounded-md ${
-                isActive
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-300 hover:bg-slate-800/70"
-              }`
-            }
-          >
-            Accounts
-          </NavLink>
-
-          <NavLink
-            to="/transactions"
-            className={({ isActive }) =>
-              `w-full block px-3 py-2 rounded-md ${
-                isActive
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-300 hover:bg-slate-800/70"
-              }`
-            }
-          >
-            Transactions
-          </NavLink>
-
-          <NavLink
-            to="/tiers"
-            className={({ isActive }) =>
-              `w-full block px-3 py-2 rounded-md ${
-                isActive
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-300 hover:bg-slate-800/70"
-              }`
-            }
-          >
-            Tiers
-          </NavLink>
-
-          <NavLink
-            to="/batch"
-            className={({ isActive }) =>
-              `w-full block px-3 py-2 rounded-md ${
-                isActive
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-300 hover:bg-slate-800/70"
-              }`
-            }
-          >
-            Batch
-          </NavLink>
+          {[
+            { to: "/", label: "Accounts", icon: "👤" },
+            { to: "/transactions", label: "Transactions", icon: "🔁" },
+            { to: "/tiers", label: "Tiers", icon: "🏆" },
+            { to: "/batch", label: "Batch", icon: "⚙️" },
+          ].map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `
+        flex items-center gap-3 px-3 py-2 rounded-md transition
+        ${
+          isActive
+            ? "bg-slate-800 text-white border-l-4 border-emerald-400"
+            : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
+        }
+        `
+              }
+            >
+              <span className="text-lg">{item.icon}</span>
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
 
         <div className="p-4 border-t border-slate-800 text-xs text-slate-400">
-          Technical Assignment • v1.0
+          Karim Salam's Technical Assessment
         </div>
       </aside>
 
       <div className="flex-1 flex flex-col">
-        <header className="h-16 border-b border-slate-800 bg-slate-900/70 flex items-center justify-between px-6">
-          <h1 className="text-xl font-semibold">{getTitle()}</h1>
+        <header className="h-16 border-b border-slate-800 bg-slate-900/70 flex items-center justify-between px-6 relative">
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <h1 className="text-xl font-semibold">{getTitle()}</h1>
+          </div>
 
           <div className="flex items-center gap-3">
             <span className="hidden sm:inline text-xs text-slate-400">

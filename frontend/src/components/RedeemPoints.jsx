@@ -45,21 +45,27 @@ export default function RedeemPoints() {
     <div className="space-y-4 text-slate-100">
       <h2 className="text-xl font-semibold text-center">Redeem Points</h2>
 
-      <input
-        type="number"
-        placeholder="Customer ID"
-        value={customerId}
-        onChange={(e) => setCustomerId(e.target.value)}
-        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-red-500"
-      />
+      <div className="space-y-1">
+        <label className="text-sm text-slate-300">Customer ID</label>
+        <input
+          type="number"
+          placeholder="Enter customer ID"
+          value={customerId}
+          onChange={(e) => setCustomerId(e.target.value)}
+          className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-red-500"
+        />
+      </div>
 
-      <input
-        type="number"
-        placeholder="Points to redeem"
-        value={points}
-        onChange={(e) => setPoints(e.target.value)}
-        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-red-500"
-      />
+      <div className="space-y-1">
+        <label className="text-sm text-slate-300">Points to Redeem</label>
+        <input
+          type="number"
+          placeholder="Enter points"
+          value={points}
+          onChange={(e) => setPoints(e.target.value)}
+          className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-red-500"
+        />
+      </div>
 
       <button
         onClick={redeem}

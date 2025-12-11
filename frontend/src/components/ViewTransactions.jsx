@@ -52,16 +52,19 @@ export default function ViewTransactions() {
   }, []);
 
   return (
-    <div className="space-y-4 text-slate-100">
+    <div className="space-y-6 text-slate-100">
       <h2 className="text-xl font-semibold text-center">Transaction History</h2>
 
-      <input
-        type="number"
-        placeholder="Customer ID"
-        value={customerId}
-        onChange={(e) => setCustomerId(e.target.value)}
-        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
-      />
+      <div className="space-y-1">
+        <label className="text-sm text-slate-300">Customer ID</label>
+        <input
+          type="number"
+          placeholder="Enter customer ID"
+          value={customerId}
+          onChange={(e) => setCustomerId(e.target.value)}
+          className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
+        />
+      </div>
 
       <button
         onClick={() => loadTransactions(1)}
@@ -79,7 +82,7 @@ export default function ViewTransactions() {
         </p>
       )}
 
-      <div className="mt-4 space-y-2">
+      <div className="mt-4 space-y-3">
         {list.length === 0 && !error && (
           <p className="text-slate-400 text-center">No transactions found.</p>
         )}
@@ -87,14 +90,21 @@ export default function ViewTransactions() {
         {list.map((tx) => (
           <div
             key={tx._id}
-            className="bg-slate-800 border border-slate-700 p-3 rounded-md flex justify-between"
+            className="bg-slate-900/60 border border-slate-800 p-4 rounded-md flex justify-between items-center"
           >
             <div className="space-y-1">
-              <p className="text-slate-200">
-                <strong>{tx.type}</strong> – {tx.category}
+              <p className="text-slate-200 font-medium">
+                <span
+                  className={`font-bold ${
+                    tx.type === "EARN" ? "text-green-400" : "text-red-400"
+                  }`}
+                >
+                  {tx.type}
+                </span>{" "}
+                · {tx.category}
               </p>
 
-              <p className="text-sm text-slate-400">
+              <p className="text-xs text-slate-400">
                 {new Date(tx.transactionDate).toLocaleString()}
               </p>
 
@@ -102,13 +112,16 @@ export default function ViewTransactions() {
                 <p className="text-xs text-purple-400">Batch: {tx.batchId}</p>
               )}
 
-              <p className="text-xs text-slate-300">
-                Processed: {tx.posted ? "Yes" : "No"}
+              <p className="text-xs text-slate-400">
+                Posted:{" "}
+                <span className={tx.posted ? "text-green-400" : "text-red-400"}>
+                  {tx.posted ? "Yes" : "No"}
+                </span>
               </p>
             </div>
 
             <p
-              className={`text-lg font-bold ${
+              className={`text-xl font-bold ${
                 tx.type === "EARN" ? "text-green-400" : "text-red-400"
               }`}
             >
@@ -119,30 +132,30 @@ export default function ViewTransactions() {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-4 mt-4 text-slate-200">
+        <div className="flex items-center justify-center gap-6 mt-6 text-slate-200">
           <button
             disabled={page <= 1}
             onClick={() => loadTransactions(page - 1)}
-            className={`px-3 py-1 rounded-md ${
+            className={`px-4 py-2 rounded-md transition ${
               page <= 1
                 ? "bg-slate-700 opacity-40 cursor-not-allowed"
-                : "bg-slate-700 hover:bg-slate-600 cursor-pointer"
+                : "bg-slate-800 hover:bg-slate-700 cursor-pointer"
             }`}
           >
             Prev
           </button>
 
-          <span>
+          <span className="text-sm tracking-wide">
             Page <strong>{page}</strong> / {totalPages}
           </span>
 
           <button
             disabled={page >= totalPages}
             onClick={() => loadTransactions(page + 1)}
-            className={`px-3 py-1 rounded-md ${
+            className={`px-4 py-2 rounded-md transition ${
               page >= totalPages
                 ? "bg-slate-700 opacity-40 cursor-not-allowed"
-                : "bg-slate-700 hover:bg-slate-600 cursor-pointer"
+                : "bg-slate-800 hover:bg-slate-700 cursor-pointer"
             }`}
           >
             Next

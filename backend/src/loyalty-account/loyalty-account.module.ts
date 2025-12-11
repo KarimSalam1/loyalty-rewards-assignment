@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   LoyaltyAccount,
@@ -7,6 +7,7 @@ import {
 import { LoyaltyAccountController } from './loyalty-account.controller';
 import { LoyaltyAccountService } from './loyalty-account.service';
 import { LoyaltyTierModule } from 'src/loyalty-tier/loyalty-tier.module';
+import { LoyaltyTransactionModule } from '../loyalty-transaction/loyalty-transaction.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LoyaltyTierModule } from 'src/loyalty-tier/loyalty-tier.module';
       { name: LoyaltyAccount.name, schema: LoyaltyAccountSchema },
     ]),
     LoyaltyTierModule,
+    forwardRef(() => LoyaltyTransactionModule),
   ],
   controllers: [LoyaltyAccountController],
   providers: [LoyaltyAccountService],

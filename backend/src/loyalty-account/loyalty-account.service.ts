@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
@@ -6,13 +11,18 @@ import {
   LoyaltyAccountDocument,
 } from './schemas/loyalty-account.schema';
 import { LoyaltyTierService } from 'src/loyalty-tier/loyalty-tier.service';
+import { LoyaltyTransactionService } from 'src/loyalty-transaction/loyalty-transaction.service';
 
 @Injectable()
 export class LoyaltyAccountService {
   constructor(
     @InjectModel(LoyaltyAccount.name)
     private accountModel: Model<LoyaltyAccountDocument>,
+
     private readonly tierService: LoyaltyTierService,
+
+    @Inject(forwardRef(() => LoyaltyTransactionService))
+    private readonly transactionService: LoyaltyTransactionService,
   ) {}
 
   async createAccount(customerId: number, tenantId = 1) {
@@ -42,7 +52,12 @@ export class LoyaltyAccountService {
   }
 
   async findByCustomerId(customerId: number, tenantId = 1) {
-    const account = await this.accountModel.findOne({ customerId, tenantId });
+    let account = await this.accountModel.findOne({ customerId, tenantId });
+    if (!account) return null;
+
+    await this.transactionService.cleanupExpiredPoints(account._id);
+
+    account = await this.accountModel.findOne({ customerId, tenantId });
     if (!account) return null;
 
     await this.tierService.evaluateTierForAccount(account);
@@ -54,8 +69,9 @@ export class LoyaltyAccountService {
     const account = await this.accountModel.findOne({ _id: id, tenantId });
     if (!account) return null;
 
-    await this.tierService.evaluateTierForAccount(account);
+    await this.transactionService.cleanupExpiredPoints(account._id);
 
+    await this.tierService.evaluateTierForAccount(account);
     return account;
   }
 
@@ -78,5 +94,16 @@ export class LoyaltyAccountService {
       .exec();
     if (!account) return null;
     return account._id;
+  }
+
+  async reduceBalance(accountId: Types.ObjectId, amount: number) {
+    await this.accountModel.updateOne(
+      { _id: accountId },
+      {
+        $inc: {
+          currentBalance: -amount,
+        },
+      },
+    );
   }
 }
