@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../api";
+import { useReset } from "../context/reset/useReset";
 
 export default function EarnPoints() {
   const [customerId, setCustomerId] = useState("");
@@ -11,9 +12,11 @@ export default function EarnPoints() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const { register, resetAll } = useReset();
+
   const earn = async () => {
-    setError("");
-    setSuccess("");
+    resetFields();
+    resetAll();
 
     if (!customerId) {
       setError("Customer ID is required");
@@ -60,15 +63,26 @@ export default function EarnPoints() {
       }
 
       await api.post("/earn", payload);
-
-      setPoints("");
-      setRentalDuration("");
-      setMilesDriven("");
-      setDescription("");
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong");
     }
   };
+
+  const resetFields = () => {
+    setCustomerId("");
+    setCategory("");
+    setPoints("");
+    setRentalDuration("");
+    setMilesDriven("");
+    setDescription("");
+    setError("");
+    setSuccess("");
+  };
+  useEffect(() => {
+    register(() => {
+      resetFields();
+    });
+  }, []);
 
   return (
     <div className="p-4 bg-white shadow rounded-md">

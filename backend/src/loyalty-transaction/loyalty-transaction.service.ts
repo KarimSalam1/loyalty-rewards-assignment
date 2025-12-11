@@ -9,6 +9,8 @@ import {
 } from './schemas/loyalty-transaction.schema';
 import { LoyaltyAccountService } from '../loyalty-account/loyalty-account.service';
 import { CalculatePointsDto } from './dto/calculate.dto';
+import { EarnPointsDto } from './dto/earn.dto';
+import { RedeemPointsDto } from './dto/redeem.dto';
 
 @Injectable()
 export class LoyaltyTransactionService {
@@ -19,15 +21,7 @@ export class LoyaltyTransactionService {
     private readonly accountService: LoyaltyAccountService,
   ) {}
 
-  async earnPoints(data: {
-    customerId: number;
-    rentalId?: number;
-    category: TransactionCategory;
-    points?: number;
-    rentalDuration?: number;
-    milesDriven?: number;
-    description: string;
-  }) {
+  async earnPoints(data: EarnPointsDto) {
     const account = await this.accountService.findByCustomerId(
       data.customerId,
       1,
@@ -73,8 +67,6 @@ export class LoyaltyTransactionService {
       throw new BadRequestException('Unsupported category');
     }
 
-    console.log('Calculated EARN POINTS:', points);
-
     return this.transactionModel.create({
       tenantId: 1,
       loyaltyAccountId: account._id,
@@ -89,11 +81,7 @@ export class LoyaltyTransactionService {
     });
   }
 
-  async redeemPoints(data: {
-    customerId: number;
-    points: number;
-    description: string;
-  }) {
+  async redeemPoints(data: RedeemPointsDto) {
     const { customerId, points, description } = data;
 
     if (points <= 0) {
@@ -135,14 +123,6 @@ export class LoyaltyTransactionService {
       })
       .sort({ transactionDate: 1 });
 
-    const totalAvailable = earnings.reduce((sum, tx) => sum + tx.points, 0);
-
-    if (totalAvailable < points) {
-      throw new BadRequestException(
-        `Insufficient balance. Available: ${totalAvailable}, requested: ${points}`,
-      );
-    }
-
     let remaining = points;
 
     const updates: { earnTransactionId: Types.ObjectId; deducted: number }[] =
@@ -179,13 +159,28 @@ export class LoyaltyTransactionService {
     };
   }
 
-  async getTransactions(customerId: number) {
+  async getTransactions(customerId: number, page = 1, limit = 10) {
     const account = await this.accountService.findByCustomerId(customerId, 1);
     if (!account) throw new BadRequestException('Account not found');
 
-    return this.transactionModel.find({
-      loyaltyAccountId: account._id,
-    });
+    const skip = (page - 1) * limit;
+
+    const [items, total] = await Promise.all([
+      this.transactionModel
+        .find({ loyaltyAccountId: account._id })
+        .sort({ transactionDate: -1 })
+        .skip(skip)
+        .limit(limit),
+      this.transactionModel.countDocuments({ loyaltyAccountId: account._id }),
+    ]);
+
+    return {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      items,
+    };
   }
 
   async batchPostTransactions() {

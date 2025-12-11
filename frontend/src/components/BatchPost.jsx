@@ -1,9 +1,19 @@
 import { useState } from "react";
 import { api } from "../api";
+import { useReset } from "../context/reset/useReset";
 
 export default function BatchPost() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const { resetAll } = useReset();
+
+  const startAutoClear = () => {
+    setTimeout(() => {
+      setError("");
+      setSuccess("");
+    }, 5000);
+  };
 
   const runBatch = async () => {
     setError("");
@@ -18,8 +28,12 @@ export default function BatchPost() {
           `Earned: ${res.data.totalEarned} points\n` +
           `Redeemed: ${res.data.totalRedeemed} points`
       );
+
+      startAutoClear();
+      resetAll();
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong");
+      startAutoClear();
     }
   };
 

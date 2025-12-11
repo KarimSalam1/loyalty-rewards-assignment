@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../api";
+import { useReset } from "../context/reset/useReset";
 
 export default function CreateAccount() {
   const [customerId, setCustomerId] = useState("");
@@ -8,9 +9,11 @@ export default function CreateAccount() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const { register, resetAll } = useReset();
+
   const create = async () => {
-    setError("");
-    setSuccess("");
+    resetFields();
+    resetAll();
 
     try {
       const res = await api.post("/accounts", {
@@ -25,6 +28,18 @@ export default function CreateAccount() {
       setError(err.response.data?.message);
     }
   };
+
+  const resetFields = () => {
+    setResult(null);
+    setError("");
+    setSuccess("");
+  };
+
+  useEffect(() => {
+    register(() => {
+      resetFields();
+    });
+  }, []);
 
   return (
     <div className="p-4 bg-white shadow rounded-md">

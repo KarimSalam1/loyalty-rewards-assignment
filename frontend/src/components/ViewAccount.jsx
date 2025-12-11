@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../api";
+import { useReset } from "../context/reset/useReset";
 
 export default function ViewAccount() {
   const [customerId, setCustomerId] = useState("");
@@ -7,10 +8,11 @@ export default function ViewAccount() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const { register, resetAll } = useReset();
+
   const load = async () => {
-    setSuccess("");
-    setError("");
-    setAccount(null);
+    resetAll();
+    resetFields();
 
     try {
       const res = await api.get(`/accounts/${customerId}`);
@@ -21,6 +23,18 @@ export default function ViewAccount() {
       setError(message);
     }
   };
+
+  const resetFields = () => {
+    setError("");
+    setSuccess("");
+    setAccount(null);
+  };
+
+  useEffect(() => {
+    register(() => {
+      resetFields();
+    });
+  }, []);
 
   return (
     <div className="p-4 bg-white shadow rounded-md">

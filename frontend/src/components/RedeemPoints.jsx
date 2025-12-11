@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../api";
+import { useReset } from "../context/reset/useReset";
 
 export default function RedeemPoints() {
   const [customerId, setCustomerId] = useState("");
@@ -7,9 +8,11 @@ export default function RedeemPoints() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const { register, resetAll } = useReset();
+
   const redeem = async () => {
-    setError("");
-    setSuccess("");
+    resetFields();
+    resetAll();
 
     try {
       const res = await api.post("/redeem", {
@@ -17,7 +20,6 @@ export default function RedeemPoints() {
         points: Number(points),
         description: "Frontend redemption",
       });
-      console.log("FIFO Breakdown:", res.data);
 
       const fifo = res.data.fifoBreakdown || [];
       const total = fifo.reduce((sum, item) => sum + item.deducted, 0);
@@ -31,6 +33,17 @@ export default function RedeemPoints() {
       );
     }
   };
+
+  const resetFields = () => {
+    setError("");
+    setSuccess("");
+  };
+
+  useEffect(() => {
+    register(() => {
+      resetFields();
+    });
+  }, []);
 
   return (
     <div className="p-4 bg-white shadow rounded-md">

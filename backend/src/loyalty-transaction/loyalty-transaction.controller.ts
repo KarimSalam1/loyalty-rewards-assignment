@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Get, Query } from '@nestjs/common';
 import { LoyaltyTransactionService } from './loyalty-transaction.service';
-import { TransactionCategory } from './schemas/loyalty-transaction.schema';
+import { EarnPointsDto } from './dto/earn.dto';
+import { RedeemPointsDto } from './dto/redeem.dto';
 import { CalculatePointsDto } from './dto/calculate.dto';
 import { CheckTierDto } from './dto/check-tier.dto';
 
@@ -9,30 +10,26 @@ export class LoyaltyTransactionController {
   constructor(private readonly service: LoyaltyTransactionService) {}
 
   @Post('earn')
-  earn(@Body() body: any) {
-    return this.service.earnPoints({
-      customerId: Number(body.customerId),
-      rentalId: body.rentalId,
-      category: body.category,
-      points: body.points,
-      description: body.description,
-      rentalDuration: body.rentalDuration,
-      milesDriven: body.milesDriven,
-    });
+  earn(@Body() body: EarnPointsDto) {
+    return this.service.earnPoints(body);
   }
 
   @Get('transactions')
-  getTransactions(@Query('customerId') customerId: number) {
-    return this.service.getTransactions(Number(customerId));
+  getTransactions(
+    @Query('customerId') customerId: number,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    return this.service.getTransactions(
+      Number(customerId),
+      Number(page),
+      Number(limit),
+    );
   }
 
   @Post('redeem')
-  redeem(@Body() body: any) {
-    return this.service.redeemPoints({
-      customerId: Number(body.customerId),
-      points: Number(body.points),
-      description: body.description,
-    });
+  redeem(@Body() body: RedeemPointsDto) {
+    return this.service.redeemPoints(body);
   }
 
   @Post('batch-post')
