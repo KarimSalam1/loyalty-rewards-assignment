@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../api";
 import { useReset } from "../context/reset/useReset";
 
@@ -50,6 +50,7 @@ export default function EarnPoints() {
 
         payload.rentalDuration = Number(rentalDuration);
         payload.milesDriven = Number(milesDriven);
+
         setSuccess(
           `Request to earn ${earnedPoints} NTM points submitted successfully!`
         );
@@ -58,8 +59,9 @@ export default function EarnPoints() {
           setError("Points are required for this category");
           return;
         }
-        setSuccess(`Request to earn ${points} points submitted successfully!`);
+
         payload.points = Number(points);
+        setSuccess(`Request to earn ${points} points submitted successfully!`);
       }
 
       await api.post("/earn", payload);
@@ -78,6 +80,7 @@ export default function EarnPoints() {
     setError("");
     setSuccess("");
   };
+
   useEffect(() => {
     register(() => {
       resetFields();
@@ -85,19 +88,19 @@ export default function EarnPoints() {
   }, []);
 
   return (
-    <div className="p-4 bg-white shadow rounded-md">
-      <h2 className="text-xl font-semibold mb-3">Earn Points</h2>
+    <div className="space-y-4 text-slate-100">
+      <h2 className="text-xl font-semibold text-center">Earn Points</h2>
 
       <input
         type="number"
         placeholder="Customer ID"
-        className="w-full border p-2 rounded mb-3"
+        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
         value={customerId}
         onChange={(e) => setCustomerId(e.target.value)}
       />
 
       <select
-        className="w-full border p-2 rounded mb-3"
+        className="w-full bg-slate-800 border border-slate-700 text-slate-300 p-2 rounded-md focus:outline-none focus:border-blue-500"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       >
@@ -112,7 +115,7 @@ export default function EarnPoints() {
           <input
             type="number"
             placeholder="Rental Duration (days)"
-            className="w-full border p-2 rounded mb-3"
+            className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
             value={rentalDuration}
             onChange={(e) => setRentalDuration(e.target.value)}
           />
@@ -120,7 +123,7 @@ export default function EarnPoints() {
           <input
             type="number"
             placeholder="Miles Driven"
-            className="w-full border p-2 rounded mb-3"
+            className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
             value={milesDriven}
             onChange={(e) => setMilesDriven(e.target.value)}
           />
@@ -131,7 +134,7 @@ export default function EarnPoints() {
         <input
           type="number"
           placeholder="Points"
-          className="w-full border p-2 rounded mb-3"
+          className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
           value={points}
           onChange={(e) => setPoints(e.target.value)}
         />
@@ -140,20 +143,20 @@ export default function EarnPoints() {
       <input
         type="text"
         placeholder="Description (optional)"
-        className="w-full border p-2 rounded mb-3"
+        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
 
       <button
         onClick={earn}
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 cursor-pointer w-full"
+        className="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 cursor-pointer mx-auto block w-40 text-center"
       >
-        Submit Earn Transaction
+        Submit Earn
       </button>
 
-      {error && <p className="text-red-600 mt-2">{error}</p>}
-      {success && <p className="text-green-600 mt-2">{success}</p>}
+      {error && <p className="text-red-400 text-center">{error}</p>}
+      {success && <p className="text-green-400 text-center">{success}</p>}
     </div>
   );
 }

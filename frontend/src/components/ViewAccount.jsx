@@ -37,34 +37,35 @@ export default function ViewAccount() {
   }, []);
 
   return (
-    <div className="p-4 bg-white shadow rounded-md">
-      <h2 className="text-xl font-semibold mb-2">View Account</h2>
+    <div className="space-y-4 text-slate-100">
+      <h2 className="text-xl font-semibold text-center">View Account</h2>
 
       <input
         type="number"
         placeholder="Customer ID"
         value={customerId}
         onChange={(e) => setCustomerId(e.target.value)}
-        className="w-full border p-2 rounded mb-3"
+        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
       />
 
       <button
         onClick={load}
-        className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800 cursor-pointer"
+        className="bg-gray-600 text-white px-3 py-2 rounded-md hover:bg-gray-700 cursor-pointer mx-auto block w-32 text-center"
       >
         Load
       </button>
 
       {account && (
-        <div className="mt-3 space-y-1">
+        <div className="text-center space-y-1 text-slate-300">
           <p>Account#: {account.accountNumber}</p>
           <p>Tier: {account.tier}</p>
           <p>Balance: {account.currentBalance}</p>
           <p>Tier Points: {account.tierQualifyingPoints}</p>
         </div>
       )}
-      {error && <p className="text-red-600 mt-2">{error}</p>}
-      {success && <p className="text-green-600 mt-2">{success}</p>}
+
+      {error && <p className="text-red-400 text-center">{error}</p>}
+      {success && <p className="text-green-400 text-center">{success}</p>}
     </div>
   );
 }

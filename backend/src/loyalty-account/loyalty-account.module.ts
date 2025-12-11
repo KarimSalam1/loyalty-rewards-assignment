@@ -17,6 +17,6 @@ import { LoyaltyTierModule } from 'src/loyalty-tier/loyalty-tier.module';
   ],
   controllers: [LoyaltyAccountController],
   providers: [LoyaltyAccountService],
-  exports: [LoyaltyAccountService], // important for other modules (earn/redeem)
+  exports: [LoyaltyAccountService],
 })
 export class LoyaltyAccountModule {}

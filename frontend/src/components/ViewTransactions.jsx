@@ -52,60 +52,64 @@ export default function ViewTransactions() {
   }, []);
 
   return (
-    <div className="p-4 bg-white shadow rounded-md">
-      <h2 className="text-xl font-semibold mb-2">Transaction History</h2>
+    <div className="space-y-4 text-slate-100">
+      <h2 className="text-xl font-semibold text-center">Transaction History</h2>
 
       <input
         type="number"
         placeholder="Customer ID"
         value={customerId}
         onChange={(e) => setCustomerId(e.target.value)}
-        className="w-full border p-2 rounded mb-3"
+        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-blue-500"
       />
 
       <button
         onClick={() => loadTransactions(1)}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+        className="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 cursor-pointer mx-auto block w-48 text-center"
       >
         Load Transactions
       </button>
 
       {error && (
-        <p className="text-red-600 mt-2 whitespace-pre-line">{error}</p>
+        <p className="text-red-400 text-center whitespace-pre-line">{error}</p>
       )}
       {success && (
-        <p className="text-green-600 mt-2 whitespace-pre-line">{success}</p>
+        <p className="text-green-400 text-center whitespace-pre-line">
+          {success}
+        </p>
       )}
 
-      <div className="mt-4">
+      <div className="mt-4 space-y-2">
         {list.length === 0 && !error && (
-          <p className="text-gray-500">No transactions found.</p>
+          <p className="text-slate-400 text-center">No transactions found.</p>
         )}
 
         {list.map((tx) => (
           <div
             key={tx._id}
-            className="border p-3 rounded mb-2 bg-gray-50 flex justify-between"
+            className="bg-slate-800 border border-slate-700 p-3 rounded-md flex justify-between"
           >
-            <div>
-              <p>
+            <div className="space-y-1">
+              <p className="text-slate-200">
                 <strong>{tx.type}</strong> – {tx.category}
               </p>
-              <p className="text-sm text-gray-500">
+
+              <p className="text-sm text-slate-400">
                 {new Date(tx.transactionDate).toLocaleString()}
               </p>
+
               {tx.batchId && (
-                <p className="text-xs text-purple-600">Batch: {tx.batchId}</p>
+                <p className="text-xs text-purple-400">Batch: {tx.batchId}</p>
               )}
 
-              <p className="text-xs text-black-600">
+              <p className="text-xs text-slate-300">
                 Processed: {tx.posted ? "Yes" : "No"}
               </p>
             </div>
 
             <p
-              className={`font-bold ${
-                tx.type === "EARN" ? "text-green-600" : "text-red-600"
+              className={`text-lg font-bold ${
+                tx.type === "EARN" ? "text-green-400" : "text-red-400"
               }`}
             >
               {tx.points}
@@ -115,14 +119,14 @@ export default function ViewTransactions() {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center gap-4 mt-4">
+        <div className="flex items-center justify-center gap-4 mt-4 text-slate-200">
           <button
             disabled={page <= 1}
             onClick={() => loadTransactions(page - 1)}
-            className={`px-3 py-1 rounded  ${
+            className={`px-3 py-1 rounded-md ${
               page <= 1
-                ? "bg-gray-300 cursor-not-allowed "
-                : "bg-gray-500 text-white cursor-pointer "
+                ? "bg-slate-700 opacity-40 cursor-not-allowed"
+                : "bg-slate-700 hover:bg-slate-600 cursor-pointer"
             }`}
           >
             Prev
@@ -135,10 +139,10 @@ export default function ViewTransactions() {
           <button
             disabled={page >= totalPages}
             onClick={() => loadTransactions(page + 1)}
-            className={`px-3 py-1 rounded ${
+            className={`px-3 py-1 rounded-md ${
               page >= totalPages
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-gray-500 text-white cursor-pointer"
+                ? "bg-slate-700 opacity-40 cursor-not-allowed"
+                : "bg-slate-700 hover:bg-slate-600 cursor-pointer"
             }`}
           >
             Next

@@ -24,13 +24,9 @@ export default function RedeemPoints() {
       const fifo = res.data.fifoBreakdown || [];
       const total = fifo.reduce((sum, item) => sum + item.deducted, 0);
 
-      setSuccess(
-        `Redemption request created successfully. Deducted a total of ${total} points.`
-      );
+      setSuccess(`Redemption successful. Total deducted: ${total} points.`);
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Unable to process redemption request."
-      );
+      setError(err.response?.data?.message || "Unable to process redemption.");
     }
   };
 
@@ -46,15 +42,15 @@ export default function RedeemPoints() {
   }, []);
 
   return (
-    <div className="p-4 bg-white shadow rounded-md">
-      <h2 className="text-xl font-semibold mb-2">Redeem Points</h2>
+    <div className="space-y-4 text-slate-100">
+      <h2 className="text-xl font-semibold text-center">Redeem Points</h2>
 
       <input
         type="number"
         placeholder="Customer ID"
         value={customerId}
         onChange={(e) => setCustomerId(e.target.value)}
-        className="w-full border p-2 rounded mb-2"
+        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-red-500"
       />
 
       <input
@@ -62,17 +58,18 @@ export default function RedeemPoints() {
         placeholder="Points to redeem"
         value={points}
         onChange={(e) => setPoints(e.target.value)}
-        className="w-full border p-2 rounded mb-3"
+        className="w-full bg-slate-800 border border-slate-700 text-slate-100 p-2 rounded-md focus:outline-none focus:border-red-500"
       />
 
       <button
         onClick={redeem}
-        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
+        className="bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-700 cursor-pointer mx-auto block w-40 text-center"
       >
         Redeem
       </button>
-      {error && <p className="text-red-600 mt-2">{error}</p>}
-      {success && <p className="text-green-600 mt-2">{success}</p>}
+
+      {error && <p className="text-red-400 text-center">{error}</p>}
+      {success && <p className="text-green-400 text-center">{success}</p>}
     </div>
   );
 }
