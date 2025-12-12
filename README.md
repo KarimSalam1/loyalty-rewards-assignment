@@ -59,6 +59,23 @@ A demonstration loyalty-rewards system implementing realistic business rules:
 
 ---
 
+## Postman Collection
+
+A Postman collection and environment are included to test the API easily.
+
+**Files:**
+
+- `Loyalty-Rewards-API.postman_collection.json`
+- `Loyalty-Rewards-Env.postman_environment.json`
+
+**Usage:**
+
+1. Import both files into Postman
+2. Select the provided environment
+3. Run the requests in order (Create Account → Earn → Batch Post → Redeem → Get Transactions) **OR** If not in order you can use the customer id 123 for any request.
+
+---
+
 ## Features
 
 - ✅ Create accounts
