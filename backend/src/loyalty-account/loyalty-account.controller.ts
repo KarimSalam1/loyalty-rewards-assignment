@@ -7,17 +7,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { LoyaltyAccountService } from './loyalty-account.service';
+import { CreateAccountDto } from './dto/create-account.dto';
 
 @Controller('loyalty/accounts')
 export class LoyaltyAccountController {
   constructor(private readonly accountService: LoyaltyAccountService) {}
 
   @Post()
-  create(@Body() body: { customerId: number; tenantId?: number }) {
-    return this.accountService.createAccount(
-      body.customerId,
-      body.tenantId ?? 1,
-    );
+  create(@Body() dto: CreateAccountDto) {
+    return this.accountService.createAccount(dto.customerId, dto.tenantId ?? 1);
   }
 
   @Get(':customerId')
