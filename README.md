@@ -55,6 +55,8 @@ A demonstration loyalty-rewards system implementing realistic business rules:
 - Frontend: https://loyalty-rewards-assignment.vercel.app
 - Backend API: https://loyalty-rewards-assignment.onrender.com/loyalty
 
+> ⚠️ **Note:** Backend is hosted on the free Render tier. The first request may take 1-2 minutes as the service spins up from inactivity.
+
 ---
 
 ## Features
