@@ -35,7 +35,7 @@ export class LoyaltyAccountService {
 
     const accountNumber = await this.generateAccountNumber(tenantId);
 
-    const newAccount = new this.accountModel({
+    return this.accountModel.create({
       tenantId,
       customerId,
       accountNumber,
@@ -47,8 +47,6 @@ export class LoyaltyAccountService {
       tierDate: new Date(),
       joinDate: new Date(),
     });
-
-    return newAccount.save();
   }
 
   async findByCustomerId(customerId: number, tenantId = 1) {
