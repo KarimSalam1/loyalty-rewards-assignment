@@ -346,4 +346,64 @@ export class LoyaltyTransactionService {
       expiredPoints: expiredTotal,
     };
   }
+
+  async getDashboardStats() {
+    type PointsAggregate = { total: number };
+    const tenantId = 1;
+
+    const [
+      totalAccounts,
+      totalTransactions,
+      pendingTransactions,
+      earnedAgg,
+      redeemedAgg,
+      lastBatchTx,
+    ] = await Promise.all([
+      this.accountService['accountModel'].countDocuments({ tenantId }),
+
+      this.transactionModel.countDocuments({ tenantId }),
+
+      this.transactionModel.countDocuments({
+        tenantId,
+        posted: false,
+      }),
+
+      this.transactionModel.aggregate<PointsAggregate>([
+        { $match: { tenantId, type: TransactionType.EARN, posted: true } },
+        { $group: { _id: null, total: { $sum: '$points' } } },
+      ]),
+
+      this.transactionModel.aggregate<PointsAggregate>([
+        { $match: { tenantId, type: TransactionType.REDEEM, posted: true } },
+        { $group: { _id: null, total: { $sum: { $abs: '$points' } } } },
+      ]),
+
+      this.transactionModel
+        .findOne({ tenantId, batchId: { $exists: true } })
+        .sort({ transactionDate: -1 })
+        .select('transactionDate'),
+    ]);
+
+    const earned = earnedAgg.length ? earnedAgg[0].total : 0;
+    const redeemed = redeemedAgg.length ? redeemedAgg[0].total : 0;
+
+    return {
+      accounts: {
+        total: totalAccounts,
+      },
+      points: {
+        earned,
+        redeemed,
+        outstanding: earned - redeemed,
+      },
+      transactions: {
+        total: totalTransactions,
+        pending: pendingTransactions,
+      },
+      batch: {
+        pending: pendingTransactions,
+        lastRun: lastBatchTx?.transactionDate ?? null,
+      },
+    };
+  }
 }

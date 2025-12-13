@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ResetProvider } from "./context/reset/ResetProvider";
 import DashboardLayout from "./layouts/DashboardLayout.jsx";
@@ -17,6 +17,7 @@ import ViewTransactionsPage from "./pages/Transactions/ViewTransactionsPage.jsx"
 import TransactionsHomePage from "./pages/Transactions/TransactionsHomePage.jsx";
 import EarnPointsPage from "./pages/Transactions/EarnPointsPage.jsx";
 import RedeemPointsPage from "./pages/Transactions/RedeemPointsPage.jsx";
+import StatisticsPage from "./pages/Statistics/StatisticsPage.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -25,7 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <BrowserRouter>
           <DashboardLayout>
             <Routes>
-              <Route path="/" element={<Navigate to="/accounts" replace />} />
+              <Route path="/" element={<StatisticsPage />} />
               <Route path="/accounts" element={<AccountsHomePage />} />
               <Route path="/accounts/create" element={<CreateAccountPage />} />
               <Route path="/accounts/view" element={<ViewAccountPage />} />

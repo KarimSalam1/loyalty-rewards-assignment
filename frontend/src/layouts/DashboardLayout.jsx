@@ -11,11 +11,12 @@ export default function DashboardLayout({ children }) {
     if (location.pathname === "/") return "Accounts";
     if (location.pathname.startsWith("/transactions")) return "Transactions";
     if (location.pathname.startsWith("/tiers")) return "Tiers";
-    return "Accounts";
+    return "Dashboard";
   };
 
   const navItems = [
-    { to: "/", label: "Accounts", icon: "👤" },
+    { to: "/", label: "Dashboard", icon: "📊" },
+    { to: "/accounts", label: "Accounts", icon: "👤" },
     { to: "/transactions", label: "Transactions", icon: "🔁" },
     { to: "/tiers", label: "Tiers", icon: "🏆" },
     { to: "/batch", label: "Batch", icon: "⚙️" },

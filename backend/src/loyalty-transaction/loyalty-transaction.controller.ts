@@ -46,4 +46,9 @@ export class LoyaltyTransactionController {
   checkTier(@Body() dto: CheckTierDto) {
     return this.service.checkTier(Number(dto.customerId));
   }
+
+  @Get('dashboard')
+  getDashboard() {
+    return this.service.getDashboardStats();
+  }
 }
