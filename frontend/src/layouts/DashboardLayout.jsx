@@ -120,15 +120,6 @@ export default function DashboardLayout({ children }) {
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <h1 className="text-xl font-semibold">{getTitle()}</h1>
           </div>
-
-          <div className="flex items-center gap-3 right-0">
-            <span className="hidden sm:inline text-xs text-slate-400">
-              Admin
-            </span>
-            <div className="w-8 h-8 rounded-full bg-emerald-500/80 flex items-center justify-center text-xs font-bold">
-              KS
-            </div>
-          </div>
         </header>
 
         <main className="flex-1 p-4 md:p-8 bg-slate-950 overflow-y-auto">
