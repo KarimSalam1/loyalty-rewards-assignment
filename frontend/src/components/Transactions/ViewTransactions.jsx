@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { api } from "../api";
-import { useReset } from "../context/reset/useReset";
-import { useLoading } from "../context/loading/useLoading";
+import { useReset } from "../../context/reset/useReset";
+import { useLoading } from "../../context/loading/useLoading";
+import { api } from "../../api";
 
 export default function ViewTransactions() {
   const [customerId, setCustomerId] = useState("");

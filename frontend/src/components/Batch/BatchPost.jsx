@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { api } from "../api";
-import { useReset } from "../context/reset/useReset";
-import { useLoading } from "../context/loading/useLoading";
+import { api } from "../../api";
+import { useReset } from "../../context/reset/useReset";
+import { useLoading } from "../../context/loading/useLoading";
 
 export default function BatchPost() {
   const [error, setError] = useState("");

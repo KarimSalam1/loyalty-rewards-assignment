@@ -1,5 +1,5 @@
-import BatchPost from "../components/BatchPost";
-import Card from "../ui/Card";
+import BatchPost from "../../components/Batch/BatchPost";
+import Card from "../../ui/Card";
 
 export default function BatchPage() {
   return (
