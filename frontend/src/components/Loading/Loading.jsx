@@ -12,7 +12,7 @@ export default function Loading() {
         <div className="lr-road"></div>
 
         <div className="lr-car-wrapper">
-          <img src="./sport-car.png" className="lr-car-img" alt="car" />
+          <img src="/sport-car.png" className="lr-car-img" alt="car" />
         </div>
 
         <p className="lr-loading-text">Processing request...</p>
