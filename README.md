@@ -63,6 +63,12 @@ A demonstration loyalty-rewards system implementing realistic business rules:
 
 A Postman collection and environment are included to test the API easily.
 
+📦 src/
+├── 🧠 backend/
+│ ├── ⚙️ postman/
+│ │ ├── 🌐 Loyalty-Rewards-API.postman_collection.json  
+│ │ └── 🌐 Loyalty-Rewards-Env.postman_environment.json
+
 **Files:**
 
 - `Loyalty-Rewards-API.postman_collection.json`
