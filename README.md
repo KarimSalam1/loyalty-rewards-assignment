@@ -189,7 +189,7 @@ Content-Type: application/json
 
 ## Testing
 
-Tests cover: earn/redeem logic, FIFO redemption, insufficent balance handling, tier upgrades, and expiration behavior.
+All required tests are implemented and cover: earn/redeem logic, FIFO redemption, insufficient balance handling, tier upgrades, and expiration behavior.
 
 ```bash
 cd backend
