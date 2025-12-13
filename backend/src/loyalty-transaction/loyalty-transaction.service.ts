@@ -308,7 +308,6 @@ export class LoyaltyTransactionService {
     }
 
     return {
-      upgraded,
       oldTier: account.tier,
       newTier,
       tierQualifyingPoints: currentPoints,
