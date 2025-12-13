@@ -16,6 +16,10 @@ export default function Loading() {
         </div>
 
         <p className="lr-loading-text">Processing request...</p>
+
+        <p className="lr-loading-note">
+          First request may take a few seconds (Render free tier cold start)
+        </p>
       </div>
     </div>
   );

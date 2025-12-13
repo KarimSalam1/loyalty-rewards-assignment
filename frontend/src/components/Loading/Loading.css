@@ -57,3 +57,10 @@
   letter-spacing: 0.05em;
   font-size: 0.85rem;
 }
+
+.lr-loading-note {
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: #64748b;
+  text-align: center;
+}
